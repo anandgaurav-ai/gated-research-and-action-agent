@@ -12,7 +12,7 @@ def web_search(query: str) -> str:
     Do NOT use for math calculations."""
 
     try:
-        from duckduckgo_search import DDGS
+        from ddgs import DDGS
         with DDGS() as ddgs:
             results = list(ddgs.text(query, max_results = 3))
         if not results:

@@ -11,7 +11,7 @@ llm_with_tools = llm.bind_tools(tools)
 # ── Agent node ─────────────────────────────────────────────────
 def agent_node(state: AgentState) -> dict:
     """LLM decides what to do next."""
-    messages = SystemMessage(content = SYSTEM_PROMPT) + state["messages"]
+    messages = [SystemMessage(content = SYSTEM_PROMPT)] + state["messages"]
     response = llm_with_tools.invoke(messages)
     return {"messages": [response]}
 

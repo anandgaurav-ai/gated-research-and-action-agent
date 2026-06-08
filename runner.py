@@ -15,7 +15,7 @@ def log_action(thread_id: str, tool_name:str, args: dict, approved: bool):
         "approved": approved
     }
     audit_log.append(entry)
-    status = "✅ APPROVED" if approved else "❌ REJECTED"
+    status = "✅ APPROVED" if approved else "REJECTED"
     print(f" [{status}] {tool_name} | {entry['timestamp'][:19]}")
 
 
@@ -33,7 +33,10 @@ def repair_state(config: dict):
                )
                for tc in last.tool_calls
           ]
-          graph.update_state(config, {"messages": patches})
+          graph.update_state(config,
+                            {"messages": patches},
+                            as_node = "sensitive_tools"
+                            )
           print("State Repaired")
 
 
@@ -41,6 +44,9 @@ def repair_state(config: dict):
 
 def run_with_approval(user_input: str, thread_id: str = "default"):
     config = {"configurable": {"thread_id": thread_id}}
+
+
+
     print(f"\n{'='*55}")
     print(f"User: {user_input}")
     print(f"{'='*55}")
@@ -88,7 +94,7 @@ def run_with_approval(user_input: str, thread_id: str = "default"):
 
             # Repair state so next call on this thread works cleanly
             repair_state(config)
-            print("\n❌ Action rejected. State cleaned up.")
+            print("\nAction rejected. State cleaned up.")
             return "Action cancelled."
         
     else:

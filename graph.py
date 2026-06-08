@@ -10,7 +10,7 @@ def should_continue(state: AgentState) -> str:
     """Route to safe_tools, sensitive_tools, or END."""
     last_message = state["messages"][-1]
 
-    if not last_message.tool_calls:
+    if not hasattr(last_message, "tool_calls") or not last_message.tool_calls:
         return END
     
     for tool_call in last_message.tool_calls:
